@@ -125,19 +125,35 @@ const addNewUser = (req, res) => {
 };
 
 const updateUser = (req, res) => {
-  const { name } = req.body;
+  const { gender, name, contact, address, photoUrl } = req.body;
   const { id } = req.params;
 
-  const updatedUser = { ...DUMMY_USERS.find((user) => user.id == id) };
-  const updatedUserIndex = DUMMY_USERS.findIndex((user) => user.id === id);
-  updatedUser.name = name;
+  const updatedUser = { ...DUMMY_USERS.find((user) => user.id === Number(id)) };
+  const updatedUserIndex = DUMMY_USERS.findIndex(
+    (user) => user.id === Number(id)
+  );
+  if (gender) {
+    updatedUser.gender = gender;
+  }
+  if (name) {
+    updatedUser.name = name;
+  }
+  if (contact) {
+    updatedUser.contact = contact;
+  }
+  if (address) {
+    updatedUser.address = address;
+  }
+  if (photoUrl) {
+    updatedUser.photoUrl = photoUrl;
+  }
   DUMMY_USERS[updatedUserIndex] = updatedUser;
   res.status(200).json({ user: updatedUser });
 };
 
 const deleteUser = (req, res) => {
   const { id } = req.params;
-  DUMMY_USERS = DUMMY_USERS.filter((user) => user.id != id);
+  DUMMY_USERS = DUMMY_USERS.filter((user) => user.id !== Number(id));
   res.status(200).json({ message: "User deleted successfully" });
 };
 
