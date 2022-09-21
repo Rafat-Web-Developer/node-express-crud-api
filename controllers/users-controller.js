@@ -168,6 +168,10 @@ const updateUser = (req, res, next) => {
 const bulkUpdateUser = (req, res, next) => {
   const requestUsers = req.body;
 
+  if (requestUsers.length === 0) {
+    return next(new HttpError("Please send an users array", 404));
+  }
+
   requestUsers.map((requestUser) => {
     // console.log(requestUser);
     const { id, gender, name, contact, address, photoUrl } = requestUser;
