@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 
-app.use("/api/v1/users", usersRouter);
+app.use("/api/v1/user", usersRouter);
 
 app.use((req, res, next) => {
   const error = new HttpError("Route not found", 404);

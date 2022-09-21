@@ -3,7 +3,7 @@ const usersController = require("../../controllers/users-controller");
 
 const router = express.Router();
 
-router.get("/", usersController.getAllUser);
+router.get("/all", usersController.getAllUser);
 router.get("/random", usersController.getRandomUser);
 router.get("/:id", usersController.getUserById);
 router.post("/", usersController.addNewUser);
