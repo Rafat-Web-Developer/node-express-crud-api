@@ -1,7 +1,7 @@
 const HttpError = require("../models/http-error");
 const uuid = require("uuid");
 
-const DUMMY_USERS = [];
+let DUMMY_USERS = [];
 
 const getAllUser = (req, res) => {
   res.json({ users: DUMMY_USERS });
@@ -37,7 +37,14 @@ const updateUser = (req, res) => {
   res.status(200).json({ user: updatedUser });
 };
 
+const deleteUser = (req, res) => {
+  const { id } = req.params;
+  DUMMY_USERS = DUMMY_USERS.filter((user) => user.id != id);
+  res.status(200).json({ message: "User deleted successfully" });
+};
+
 exports.getAllUser = getAllUser;
 exports.getUserById = getUserById;
 exports.addNewUser = addNewUser;
 exports.updateUser = updateUser;
+exports.deleteUser = deleteUser;
