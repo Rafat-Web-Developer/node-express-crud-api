@@ -165,6 +165,43 @@ const updateUser = (req, res, next) => {
   res.status(200).json({ user: updatedUser });
 };
 
+const bulkUpdateUser = (req, res, next) => {
+  const requestUsers = req.body;
+
+  requestUsers.map((requestUser) => {
+    // console.log(requestUser);
+    const { id, gender, name, contact, address, photoUrl } = requestUser;
+
+    const findUser = DUMMY_USERS.find((user) => user.id === id);
+    if (!findUser) {
+      return next(new HttpError("User not found", 404));
+    }
+
+    const updatedUser = {
+      ...DUMMY_USERS.find((user) => user.id === id),
+    };
+    const updatedUserIndex = DUMMY_USERS.findIndex((user) => user.id === id);
+    if (gender) {
+      updatedUser.gender = gender;
+    }
+    if (name) {
+      updatedUser.name = name;
+    }
+    if (contact) {
+      updatedUser.contact = contact;
+    }
+    if (address) {
+      updatedUser.address = address;
+    }
+    if (photoUrl) {
+      updatedUser.photoUrl = photoUrl;
+    }
+    DUMMY_USERS[updatedUserIndex] = updatedUser;
+  });
+
+  res.status(200).json({ msg: "Users updated successfully" });
+};
+
 const deleteUser = (req, res, next) => {
   const { id } = req.params;
   const findUser = DUMMY_USERS.find((user) => user.id === Number(id));
@@ -180,4 +217,5 @@ exports.getRandomUser = getRandomUser;
 exports.getUserById = getUserById;
 exports.addNewUser = addNewUser;
 exports.updateUser = updateUser;
+exports.bulkUpdateUser = bulkUpdateUser;
 exports.deleteUser = deleteUser;
