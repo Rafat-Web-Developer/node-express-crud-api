@@ -10,13 +10,13 @@ const DUMMY_USERS = [
 ];
 
 router.get("/", (req, res) => {
-  res.json(DUMMY_USERS);
+  res.json({ data: DUMMY_USERS });
 });
 
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   const user = DUMMY_USERS.find((user) => user.id === Number(id));
-  res.json(user);
+  res.json({ data: user });
 });
 
 module.exports = router;
