@@ -9,7 +9,7 @@ const getAllUser = (req, res) => {
 
 const getUserById = (req, res, next) => {
   const { id } = req.params;
-  const user = DUMMY_USERS.find((user) => user.id === Number(id));
+  const user = DUMMY_USERS.find((user) => user.id == id);
   if (!user) {
     return next(new HttpError("Could not found that user", 404));
   }
@@ -26,6 +26,18 @@ const addNewUser = (req, res) => {
   res.status(201).json({ user: newUser });
 };
 
+const updateUser = (req, res) => {
+  const { name } = req.body;
+  const { id } = req.params;
+
+  const updatedUser = { ...DUMMY_USERS.find((user) => user.id == id) };
+  const updatedUserIndex = DUMMY_USERS.findIndex((user) => user.id === id);
+  updatedUser.name = name;
+  DUMMY_USERS[updatedUserIndex] = updatedUser;
+  res.status(200).json({ user: updatedUser });
+};
+
 exports.getAllUser = getAllUser;
 exports.getUserById = getUserById;
 exports.addNewUser = addNewUser;
+exports.updateUser = updateUser;
