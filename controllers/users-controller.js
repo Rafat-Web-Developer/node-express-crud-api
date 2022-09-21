@@ -109,9 +109,12 @@ const getUserById = (req, res, next) => {
   res.json({ user });
 };
 
-const addNewUser = (req, res) => {
+const addNewUser = (req, res, next) => {
   const totalUsers = DUMMY_USERS.length;
   const { gender, name, contact, address, photoUrl } = req.body;
+  if (!gender || !name || !contact || !address || !photoUrl) {
+    return next(new HttpError("Plase send all data", 400));
+  }
   const newUser = {
     id: totalUsers + 1,
     gender,
@@ -124,9 +127,14 @@ const addNewUser = (req, res) => {
   res.status(201).json({ user: newUser });
 };
 
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
   const { gender, name, contact, address, photoUrl } = req.body;
   const { id } = req.params;
+
+  const findUser = DUMMY_USERS.find((user) => user.id === Number(id));
+  if (!findUser) {
+    return next(new HttpError("User not found", 404));
+  }
 
   const updatedUser = { ...DUMMY_USERS.find((user) => user.id === Number(id)) };
   const updatedUserIndex = DUMMY_USERS.findIndex(
@@ -151,8 +159,12 @@ const updateUser = (req, res) => {
   res.status(200).json({ user: updatedUser });
 };
 
-const deleteUser = (req, res) => {
+const deleteUser = (req, res, next) => {
   const { id } = req.params;
+  const findUser = DUMMY_USERS.find((user) => user.id === Number(id));
+  if (!findUser) {
+    return next(new HttpError("User not found", 404));
+  }
   DUMMY_USERS = DUMMY_USERS.filter((user) => user.id !== Number(id));
   res.status(200).json({ message: "User deleted successfully" });
 };
