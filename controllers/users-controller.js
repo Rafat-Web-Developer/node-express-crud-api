@@ -1,11 +1,7 @@
 const HttpError = require("../models/http-error");
+const uuid = require("uuid");
 
-const DUMMY_USERS = [
-  {
-    id: 1,
-    name: "Rafat Hossain",
-  },
-];
+const DUMMY_USERS = [];
 
 const getAllUser = (req, res) => {
   res.json({ users: DUMMY_USERS });
@@ -20,5 +16,16 @@ const getUserById = (req, res, next) => {
   res.json({ user });
 };
 
+const addNewUser = (req, res) => {
+  const { name } = req.body;
+  const newUser = {
+    id: uuid.v4(),
+    name,
+  };
+  DUMMY_USERS.push(newUser);
+  res.status(201).json({ user: newUser });
+};
+
 exports.getAllUser = getAllUser;
 exports.getUserById = getUserById;
+exports.addNewUser = addNewUser;
