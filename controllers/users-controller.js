@@ -84,7 +84,13 @@ let DUMMY_USERS = [
 ];
 
 const getAllUser = (req, res) => {
-  res.json({ users: DUMMY_USERS });
+  const { limit } = req.query;
+  if (limit) {
+    const users = DUMMY_USERS.slice(0, limit);
+    res.status(200).json({ users: users });
+  } else {
+    res.status(200).json({ users: DUMMY_USERS });
+  }
 };
 
 function generateRandomNumber(min, max) {
